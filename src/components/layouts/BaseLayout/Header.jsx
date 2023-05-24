@@ -1,13 +1,17 @@
 import { getWallets } from '@talismn/connect-wallets';
 import React, { useState } from 'react';
+import Identicon from '@polkadot/react-identicon';
 // import {
 //   Button, Container, Menu, Modal,
 // } from 'semantic-ui-react';
-import { Button, Layout, Modal } from '@douyinfe/semi-ui';
+import {
+  Button, Layout, Modal, Toast,
+} from '@douyinfe/semi-ui';
 import { IconTreeTriangleDown } from '@douyinfe/semi-icons';
 import { omitText } from '@/utils/utils';
 import AccountsModal from '@/components/comm/AccountsModal';
 import { usePolkadotWalletContext } from '@/provider/PolkadotWallet';
+import RewardModal from './RewardModal';
 
 export default function Header() {
   const [connectModalVisible, setConnectModalVisible] = useState(false);
@@ -25,7 +29,6 @@ export default function Header() {
     }
     await connect(wallet);
     setConnectModalVisible(false);
-    // toast
   };
 
   return (
@@ -36,16 +39,32 @@ export default function Header() {
           <img className="w-10 h-10" src="https://saas3.io/logo.png" alt="" />
         </div>
 
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center">
           {state.isConnected && state.currAccount ? (
-            <div
-              className="flex items-center bg-white/10 py-2 px-4 rounded-full cursor-pointer hover:bg-white/30"
-              onClick={() => setAccountModalVisible(true)}
-            >
-              <img className="w-6 h-6" src={state.currAccount.avatar} alt="" />
-              <span className="ml-2 text-white">{omitText(state.currAccount.address)}</span>
-              <IconTreeTriangleDown className="!text-white ml-2" />
-            </div>
+            <>
+              <RewardModal />
+              <div
+                className="ml-2 flex items-center bg-white/10 py-2 px-4 rounded-full cursor-pointer hover:bg-white/30"
+                onClick={() => setAccountModalVisible(true)}
+              >
+                <span
+                  className="text-[0]"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <Identicon
+                    value={state.currAccount.address}
+                    size={24}
+                    theme="polkadot"
+                    onCopy={() => {
+                      Toast.success('Copied');
+                    }}
+                  />
+                </span>
+                {/* <img className="w-6 h-6" src={state.currAccount.avatar} alt="" /> */}
+                <span className="ml-2 text-white">{omitText(state.currAccount.address)}</span>
+                <IconTreeTriangleDown className="!text-white ml-2" />
+              </div>
+            </>
           ) : <Button onClick={onConnect}>Connect Polkadot</Button>}
         </div>
 

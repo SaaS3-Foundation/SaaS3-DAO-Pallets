@@ -1,5 +1,6 @@
-import { Modal, Tag } from '@douyinfe/semi-ui';
+import { Modal, Tag, Toast } from '@douyinfe/semi-ui';
 import React from 'react';
+import Identicon from '@polkadot/react-identicon';
 import { omitText } from '@/utils/utils';
 import { usePolkadotWalletContext } from '@/provider/PolkadotWallet';
 
@@ -38,7 +39,19 @@ export default function AccountsModal(props) {
               props.onCancel();
             }}
           >
-            <img className="w-6 h-6 mr-2" src={account.avatar} alt="" />
+            <span
+              className="mr-3 h-6"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <Identicon
+                value={account.address}
+                size={24}
+                theme="polkadot"
+                onCopy={() => {
+                  Toast.success('Copied');
+                }}
+              />
+            </span>
             <span>{omitText(account.address)}</span>
             <Tag size="small" className="ml-auto">{account.type}</Tag>
             {state.currAccount?.address === account.address && <span className="w-2 h-2 rounded-full bg-green-400 ml-2" />}

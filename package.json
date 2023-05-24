@@ -16,6 +16,7 @@
     "@douyinfe/semi-ui": "^2.34.0",
     "@polkadot/api": "^10.5.1",
     "@polkadot/api-contract": "^10.5.1",
+    "@polkadot/react-identicon": "^3.4.1",
     "@polkadot/util": "^12.1.2",
     "@rainbow-me/rainbowkit": "^0.12.12",
     "@talismn/connect-wallets": "^1.2.3",

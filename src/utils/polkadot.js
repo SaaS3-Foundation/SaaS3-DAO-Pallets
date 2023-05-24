@@ -4,3 +4,10 @@ export function stringToBytes(str) {
   const hexString = `0x${hexArray.join('')}`;
   return hexString;
 }
+
+export function bytesToString(bytes) {
+  const hexWithoutPrefix = bytes.slice(2);
+  const byteArray = Uint8Array.from(Buffer.from(hexWithoutPrefix, 'hex'));
+  const statement = new TextDecoder().decode(byteArray);
+  return statement;
+}

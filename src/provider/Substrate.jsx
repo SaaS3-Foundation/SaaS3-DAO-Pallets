@@ -28,7 +28,7 @@ import React, {
  * @type {SubstrateState}
  */
 const initialState = {
-  ws: 'ws://localhost:8844',
+  ws: import.meta.env.VITE_APP_WS,
   isConnected: false,
   api: null,
   isConnecting: false,
