@@ -144,7 +144,6 @@ export default function LawsuitList() {
     setLoading(true);
     const proposalEntries = await api.query.court.proposals.entries();
     const proposals = proposalEntries.map(([key, value]) => ({ proposalKey: key, ...value.toJSON() }));
-    console.log(proposals);
 
     setData(proposals);
     setLoading(false);

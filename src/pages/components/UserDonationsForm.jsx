@@ -17,7 +17,6 @@ export default function UserDonationsForm() {
     try {
       const { amount, category_type } = formData;
       const params = [amount, category_type];
-      console.log(...params);
 
       await api.tx.treasury
         .receive(...params)

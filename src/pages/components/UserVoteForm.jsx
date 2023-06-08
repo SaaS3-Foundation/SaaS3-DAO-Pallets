@@ -19,7 +19,7 @@ export default function UserVoteForm({ className }) {
     try {
       const { statement, reward, defendent } = formData;
       const balance = api.createType('Balance', reward);
-      const _defendent = api.createType('AccountId', address);
+      // const _defendent = api.createType('AccountId', address);
       const _statement = api.createType('Bytes', stringToBytes(statement));
       const params = [balance, defendent, _statement];
 
