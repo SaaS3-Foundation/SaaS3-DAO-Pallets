@@ -11,7 +11,7 @@ Fill in the information and submit for authorization to complete the donation. T
 
 Please note that the above process is illustrated in the screenshots.
 
-## 1. Submitting Lawsuit Information
+## 2. Submitting Lawsuit Information
 
 ![image-20230606134510822](assets/image-20230606134510822.png)
 
@@ -19,13 +19,16 @@ Please note that the above process is illustrated in the screenshots.
 2. **defendant: The defendant in the lawsuit**
 3. **statement: The content of the lawsuit**
 
-- Fill out the form and submit it, waiting for the information to be stored on the blockchain. This step requires wallet authorization and incurs a gas fee for interacting with on-chain data.
-- ![image-20230606134830691](assets/image-20230606134830691.png)
-- ![image-20230606134549750](assets/image-20230606134549750.png)
+Fill out the form and submit it, waiting for the information to be stored on the blockchain. This step requires wallet authorization and incurs a gas fee for interacting with on-chain data.
 
-- After the information is stored on the blockchain, you can view the submitted lawsuit information in the table and proceed to vote and approve.
+![image-20230606134830691](assets/image-20230606134830691.png)
 
-## Voting on Lawsuit
+After the information is stored on the blockchain, you can view the submitted lawsuit information in the table and proceed to vote and approve.
+
+![image-20230606134549750](assets/image-20230606134549750.png)
+
+
+## 3. Voting on Lawsuit
 
 ![image-20230606134633676](assets/image-20230606134633676.png)
 
@@ -33,11 +36,12 @@ Users can vote on the lawsuit information to determine the final outcome of the 
 
 ![image-20230606134745707](assets/image-20230606134745707.png)
 
-- Wait for the transaction to be confirmed on the blockchain. Refresh the data.
-- ![image-20230606134811518](assets/image-20230606134811518.png)
+Wait for the transaction to be confirmed on the blockchain. Refresh the data.
 
-## 3. Approving Lawsuit
+![image-20230606134811518](assets/image-20230606134811518.png)
+
+## 4. Approving Lawsuit
 
 ![image-20230606134910924](assets/image-20230606134910924.png)
 
-- Approve the lawsuit information.
+Approve the lawsuit information.
