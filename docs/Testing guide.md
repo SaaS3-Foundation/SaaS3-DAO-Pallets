@@ -44,4 +44,4 @@ Wait for the transaction to be confirmed on the blockchain. Refresh the data.
 
 ![image-20230606134910924](assets/image-20230606134910924.png)
 
-Approve the lawsuit information.
+Approve the lawsuit.
