@@ -7,7 +7,7 @@ export default function RewardModal() {
   const { state: substrateState } = useSubstrateContext();
   const { state } = usePolkadotWalletContext();
   const { api } = substrateState;
-  const [claim, setClaim] = useState();
+  const [claim, setClaim] = useState(0);
 
   const queryReward = async () => {
     const reward = await api.query.treasury.claims(state.currAccount.address);
@@ -30,7 +30,7 @@ export default function RewardModal() {
         Toast.info('No rewards are available for the time being.');
       }
     } catch (error) {
-      Toast.success(error.message);
+      Toast.error(error.message);
     }
   };
 
