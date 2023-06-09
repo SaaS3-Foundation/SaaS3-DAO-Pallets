@@ -50,8 +50,10 @@ Approve the lawsuit.
 
 Claiming rewards for the completed lawsuit. When a lawsuit is approved, the jury members can claim their rewards.
 
-- ![image-20230608221524255](assets/image-20230608221524255.png)
-- In the top-right corner, your available claimable amount will be displayed. If it is greater than 0, click on "Claim" and authorize the transaction with your wallet to receive the reward.
-- ![image-20230608221617056](assets/image-20230608221617056.png)
+![image-20230608221524255](assets/image-20230608221524255.png)
+
+In the top-right corner, your available claimable amount will be displayed. If it is greater than 0, click on "Claim" and authorize the transaction with your wallet to receive the reward.
+
+![image-20230608221617056](assets/image-20230608221617056.png)
 
 Note: The screenshots above illustrate the process.
