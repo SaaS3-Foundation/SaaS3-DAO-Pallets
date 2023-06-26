@@ -2,10 +2,12 @@ import { Button, Toast, Typography } from '@douyinfe/semi-ui';
 import React, { useEffect, useState } from 'react';
 import { usePolkadotWalletContext } from '@/provider/PolkadotWallet';
 import { useSubstrateContext } from '@/provider/Substrate';
+import { useSignAndSend } from '@/hooks/sign';
 
 export default function RewardModal() {
   const { state: substrateState } = useSubstrateContext();
   const { state } = usePolkadotWalletContext();
+  const { signAndSend } = useSignAndSend();
   const { api } = substrateState;
   const [claim, setClaim] = useState(0);
 
@@ -16,14 +18,12 @@ export default function RewardModal() {
   };
 
   const onChaimReward = async () => {
-    const { signer, address } = state.currAccount;
-
     try {
       const claimNumber = Number(claim);
       if (claimNumber > 0) {
-        await api.tx.treasury
-          .claimRewards(claimNumber)
-          .signAndSend(address, { signer });
+        await signAndSend(api.tx.treasury.claimRewards(claimNumber), {
+          content: 'Loading: treasury.claimRewards',
+        });
         Toast.success('claim reward successfully.');
         queryReward();
       } else {

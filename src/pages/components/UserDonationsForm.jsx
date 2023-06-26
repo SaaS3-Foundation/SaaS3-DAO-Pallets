@@ -1,30 +1,35 @@
 import {
   Button, Card, Form, Toast,
 } from '@douyinfe/semi-ui';
+import { useState } from 'react';
 import { usePolkadotWalletContext } from '@/provider/PolkadotWallet';
 import { useSubstrateContext } from '@/provider/Substrate';
+import { useSignAndSend } from '@/hooks/sign';
 
 export default function UserDonationsForm() {
   const { state } = usePolkadotWalletContext();
   const { state: substrateState } = useSubstrateContext();
-  const { address, signer } = state.currAccount || {};
+  const { signAndSend } = useSignAndSend();
+  const { address } = state.currAccount || {};
   const { api } = substrateState;
-
+  const [loading, setLoading] = useState(false);
   const onSubmit = async (formData) => {
     if (!address) {
       return Toast.error('Please connect to your wallet.');
     }
     try {
+      setLoading(true);
       const { amount, category_type } = formData;
       const params = [amount, category_type];
 
-      await api.tx.treasury
-        .receive(...params)
-        .signAndSend(address, { signer });
-
+      await signAndSend(api.tx.treasury.receive(...params), {
+        content: 'Loading: treasury.receive',
+      });
       Toast.success('Submit donations successfully.');
     } catch (error) {
       Toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,7 +54,11 @@ export default function UserDonationsForm() {
             optionList={[{ label: 'Other', value: 0 }]}
           />
 
-          <Button htmlType="submit">Submit</Button>
+          <Button
+            loading={loading}
+            htmlType="submit"
+          >Submit
+          </Button>
         </Form>
       </Card>
     </div>

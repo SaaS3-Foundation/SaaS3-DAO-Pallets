@@ -93,7 +93,6 @@ export default function PolkadotWalletProvider({ children }) {
 
   const subscribeAccounts = async () => {
     const unsubscribe = await state.wallet.subscribeAccounts((accounts) => {
-      // console.log(accounts);
       dispatch({
         type: 'SET_ACCOUNTS',
         payload: accounts,

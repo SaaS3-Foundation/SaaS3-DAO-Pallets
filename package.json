@@ -13,7 +13,7 @@
     "lint:staged": "lint-staged"
   },
   "dependencies": {
-    "@douyinfe/semi-ui": "^2.34.0",
+    "@douyinfe/semi-ui": "^2.37.0",
     "@polkadot/api": "^10.5.1",
     "@polkadot/api-contract": "^10.5.1",
     "@polkadot/react-identicon": "^3.4.1",

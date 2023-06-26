@@ -3,14 +3,13 @@ import {
 } from '@douyinfe/semi-ui';
 import React, { useEffect, useState } from 'react';
 import { useSubstrateContext } from '@/provider/Substrate';
-import { usePolkadotWalletContext } from '@/provider/PolkadotWallet';
 import { bytesToString } from '@/utils/polkadot';
 import { omitText } from '@/utils/utils';
+import { useSignAndSend } from '@/hooks/sign';
 
 export default function LawsuitList() {
   const { state: substrateState } = useSubstrateContext();
-  const { state } = usePolkadotWalletContext();
-  const { address, signer } = state.currAccount || {};
+  const { signAndSend } = useSignAndSend();
   const { api } = substrateState;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,6 +18,10 @@ export default function LawsuitList() {
     {
       title: 'index',
       render: (_, __, index) => index + 1,
+    },
+    {
+      title: 'lawsuitId',
+      dataIndex: 'lawsuitId',
     },
     {
       title: 'plaintiff',
@@ -64,13 +67,26 @@ export default function LawsuitList() {
     {
       title: 'votes',
       width: '120px',
-      render: (_, record) => (
-        <div>
-          <p>All: {record.votes.length}</p>
-          <p>Agree: {record.votes.filter((vote) => vote).length}</p>
-          <p>Refuse: {record.votes.filter((vote) => !vote).length}</p>
-        </div>
-      ),
+      render: (_, record) => {
+        let agreeCount = 0;
+        let refuseCount = 0;
+
+        for (const vote of record.votes) {
+          if (vote) {
+            agreeCount += 1;
+          } else {
+            refuseCount += 1;
+          }
+        }
+
+        return (
+          <div>
+            <p>All: {record.votes.length}</p>
+            <p>Agree: {agreeCount}</p>
+            <p>Refuse: {refuseCount}</p>
+          </div>
+        );
+      },
     },
 
     {
@@ -84,11 +100,11 @@ export default function LawsuitList() {
           <Popconfirm
             title="Do you agree with the proposal?"
             content="This modification will be irreversible."
-            onConfirm={() => onVote(i, true)}
+            onConfirm={() => onVote(record.lawsuitId, true)}
             onCancel={(event) => {
               const { target, target: { parentNode } } = event;
               if ([target.dataset.type, parentNode.dataset.type].includes('cancel')) {
-                onVote(i, false);
+                return onVote(record.lawsuitId, false);
               }
             }}
             okText="Agree"
@@ -105,7 +121,7 @@ export default function LawsuitList() {
             className="ml-1 my-1"
             type="secondary"
             theme="solid"
-            onClick={() => onApprove(i)}
+            onClick={() => onApprove(record.lawsuitId)}
           >
             Approve
           </Button>
@@ -116,10 +132,9 @@ export default function LawsuitList() {
 
   const onApprove = async (index) => {
     try {
-      await api.tx.court
-        .processSue(index)
-        .signAndSend(address, { signer });
-
+      const resp = await signAndSend(api.tx.court.processSue(index), {
+        content: 'Loading: court.processSue',
+      });
       Toast.success('Approve successfully.');
       query();
     } catch (error) {
@@ -129,9 +144,9 @@ export default function LawsuitList() {
 
   const onVote = async (index, approve) => {
     try {
-      await api.tx.court
-        .voteSue(index, approve)
-        .signAndSend(address, { signer });
+      await signAndSend(api.tx.court.voteSue(index, approve), {
+        content: 'Loading: court.voteSue',
+      });
 
       Toast.success('Vote successfully.');
       query();
@@ -143,7 +158,7 @@ export default function LawsuitList() {
   const query = async () => {
     setLoading(true);
     const proposalEntries = await api.query.court.proposals.entries();
-    const proposals = proposalEntries.map(([key, value]) => ({ proposalKey: key, ...value.toJSON() }));
+    const proposals = proposalEntries.map(([lawsuitId, value]) => ({ lawsuitId: lawsuitId.args[0].toNumber(), ...value.toJSON() }));
 
     setData(proposals);
     setLoading(false);

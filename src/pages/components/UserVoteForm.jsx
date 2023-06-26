@@ -2,34 +2,40 @@ import {
   Button, Card, Form, Toast,
 } from '@douyinfe/semi-ui';
 import { isAddress } from '@polkadot/util-crypto';
+import { useState } from 'react';
 import { usePolkadotWalletContext } from '@/provider/PolkadotWallet';
 import { useSubstrateContext } from '@/provider/Substrate';
 import { stringToBytes } from '@/utils/polkadot';
+import { useSignAndSend } from '@/hooks/sign';
 
 export default function UserVoteForm({ className }) {
   const { state } = usePolkadotWalletContext();
   const { state: substrateState } = useSubstrateContext();
-  const { address, signer } = state.currAccount || {};
+  const { signAndSend } = useSignAndSend();
+  const { address } = state.currAccount || {};
   const { api } = substrateState;
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (formData) => {
     if (!address) {
       return Toast.error('Please connect to your wallet.');
     }
     try {
+      setLoading(true);
       const { statement, reward, defendent } = formData;
       const balance = api.createType('Balance', reward);
       // const _defendent = api.createType('AccountId', address);
       const _statement = api.createType('Bytes', stringToBytes(statement));
       const params = [balance, defendent, _statement];
 
-      await api.tx.court
-        .submitSue(...params)
-        .signAndSend(address, { signer });
-
+      await signAndSend(api.tx.court.submitSue(...params), {
+        content: 'Loading: court.submitSue',
+      });
       Toast.success('Submit successfully.');
     } catch (error) {
       Toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,7 +74,11 @@ export default function UserVoteForm({ className }) {
             field="statement"
             placeholder="Please enter your statement."
           />
-          <Button htmlType="submit">Submit</Button>
+          <Button
+            loading={loading}
+            htmlType="submit"
+          >Submit
+          </Button>
         </Form>
       </Card>
     </div>
